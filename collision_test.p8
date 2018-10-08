@@ -1,7 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
-message = "allo"
+message = "bonjour"
 
 function make_vector(x,y)
 	local v = {}
