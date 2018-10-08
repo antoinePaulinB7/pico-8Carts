@@ -1,17 +1,34 @@
 pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
-message = "bonjour"
-
-function make_vector(x,y)
-	local v = {}
-	v.x = x
-	v.y = y
-	v.length = sqrt(x^2+y^2)
-	v.angle = atan2(x,y)
-	
-	return v
+--pico-8 functions
+function _init()
+ boxes = {}
+	b1 = make_box(64,64,4,6,12,17,0,"pistol")
+ add(boxes,b1)	
+	b2 = make_box(100,100,4,6,12,33,1,"pistol")	
+ add(boxes,b2)
 end
+
+function _update()
+	for b in all(boxes) do
+	 b:update()
+	end
+--	b2:update()
+end
+
+function _draw()
+	cls()
+	map(0,0,0,0,128,128)
+	for b in all(boxes) do
+	 b:draw()
+	end
+	--b2:draw()
+	debug()
+end
+-->8
+--make functions and other unorganized stuff for now
+message = "bonjour"
 
 function make_box(x,y,w,h,c,s,pnum,gun)
 	local b = {}
@@ -252,33 +269,30 @@ function die(pnum)
  _init()
 end
 
-function _init()
- boxes = {}
-	b1 = make_box(64,64,4,6,12,17,0,"pistol")
- add(boxes,b1)	
-	b2 = make_box(100,100,4,6,12,33,1,"pistol")	
- add(boxes,b2)
-end
-
-function _update()
-	for b in all(boxes) do
-	 b:update()
-	end
---	b2:update()
-end
-
-function _draw()
-	cls()
-	map(0,0,0,0,128,128)
-	for b in all(boxes) do
-	 b:draw()
-	end
-	--b2:draw()
-	debug()
-end
-
 function debug()
 	print(message,0,0)
+end
+-->8
+--utils
+function vector_2d(x,y)
+	local v = {}
+	v.x = x
+	v.y = y
+	v.length = function(self)
+	 return sqrt(self.x^2+self.y^2)
+	end
+	v.angle = function(self)
+	 return atan2(self.x,self.y)
+	end
+	v.add_vec = function(self,vector)
+	 self.x+=vector.x
+	 self.y+=vector.y
+	end
+	v.scale = function(self,k)
+	 self.x*=k
+	 self.y*=k
+	end
+	return v
 end
 __gfx__
 00000000888888880000000880000000888888880000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
